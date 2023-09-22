@@ -27,4 +27,5 @@ export const redisModule = RedisModule.registerAsync({
       },
     };
   },
+  inject: [ConfigService],
 });
