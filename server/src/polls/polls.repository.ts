@@ -46,7 +46,7 @@ export class PollsRepository {
     try {
       await this.redisClient
         .multi([
-          ['send_command', 'SET', key, '.', JSON.stringify(initialPoll)],
+          ['send_command', 'JSON.SET', key, '.', JSON.stringify(initialPoll)],
           ['expire', key, this.ttl],
         ])
         .exec();
@@ -65,7 +65,11 @@ export class PollsRepository {
 
     const key = `polls:${pollID}`;
     try {
-      const currentPoll = await this.redisClient.send_command('GET', key, '.');
+      const currentPoll = await this.redisClient.send_command(
+        'JSON.GET',
+        key,
+        '.',
+      );
 
       this.logger.verbose(currentPoll);
 
